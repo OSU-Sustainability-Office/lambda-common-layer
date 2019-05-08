@@ -1,0 +1,53 @@
+# @Author: Brogan Miner <Brogan>
+# @Date:   2019-05-05T17:45:07-07:00
+# @Email:  brogan.miner@oregonstate.edu
+# @Last modified by:   Brogan
+# @Last modified time: 2019-05-07T20:05:06-07:00
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: DB access wrappers for OSU Sustainability Office
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: nodejs8.10
+
+Resources:
+  RDSTestFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: TestRoutes/
+            Handler: app.rds
+            Layers:
+              - !Ref LambdaCommonLayer
+            Events:
+                Test:
+                    Type: Api
+                    Properties:
+                        Path: /test-rds
+                        Method: get
+  DDBTestFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: TestRoutes/
+            Handler: app.ddb
+            Layers:
+              - !Ref LambdaCommonLayer
+            Events:
+                Test:
+                    Type: Api
+                    Properties:
+                        Path: /test-ddb
+                        Method: get
+  LambdaCommonLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: LambdaCommonLayer
+            Description: DB access wrappers for OSU Sustainability Office
+            ContentUri: dependencies/
+            CompatibleRuntimes:
+              - nodejs8.10
+            LicenseInfo: 'MIT'
+            RetentionPolicy: Retain
