@@ -18,6 +18,7 @@ Resources:
   RDSTestFunction:
         Type: AWS::Serverless::Function
         Properties:
+            MemorySize: 128
             CodeUri: TestRoutes/
             Handler: app.rds
             Layers:
@@ -31,6 +32,9 @@ Resources:
   DDBTestFunction:
         Type: AWS::Serverless::Function
         Properties:
+            MemorySize: 128
+            Policies:
+              - AmazonDynamoDBFullAccess
             CodeUri: TestRoutes/
             Handler: app.ddb
             Layers:
@@ -45,9 +49,10 @@ Resources:
         Type: AWS::Serverless::LayerVersion
         Properties:
             LayerName: LambdaCommonLayer
-            Description: DB access wrappers for OSU Sustainability Office
+            Description: common layer
             ContentUri: dependencies/
             CompatibleRuntimes:
+              - nodejs6.10
               - nodejs8.10
             LicenseInfo: 'MIT'
             RetentionPolicy: Retain

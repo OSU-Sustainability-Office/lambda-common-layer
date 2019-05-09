@@ -9,11 +9,6 @@
 
 require('dotenv').config({ path: '/opt/nodejs/.env' })
 const AWS = require('aws-sdk')
-AWS.config.update({
-  region: 'us-west-2',
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-})
 
 class DDBQuery {
   constructor (ddb, table) {
@@ -80,7 +75,8 @@ var state = {
 
 exports.initialize = function () {
   if (!state.ddb) {
-    state.ddb = new AWS.DynamoDB.DocumentClient()
+    state.ddb = new AWS.DynamoDB.DocumentClient({
+    })
   }
 }
 

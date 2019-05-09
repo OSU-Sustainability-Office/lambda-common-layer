@@ -1,0 +1,26 @@
+language: python
+python:
+- '2.7'
+before_install:
+- openssl aes-256-cbc -K $encrypted_b2ff4d1c781f_key -iv $encrypted_b2ff4d1c781f_iv
+  -in dependencies/nodejs/.env.enc -out dependencies/nodejs/.env -d
+install:
+- pip install awscli
+- pip install aws-sam-cli
+script:
+- sam validate
+- sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file
+  packaged.yaml
+deploy:
+- provider: script
+  script: sam deploy --template-file ./packaged.yaml --stack-name serverless --capabilities
+    CAPABILITY_IAM
+  github-token: "$GITHUB_TOKEN"
+  skip-cleanup: true
+  on:
+    branch: master
+env:
+  global:
+  - AWS_DEFAULT_REGION=us-west-2
+  - secure: INTl/iKMG6UvMJ8Vxe1jq5PEgL9WiZCtDbw2gr3DlNWuKup3drePZ4APYlLuqhyPngwirjIb7DmVc7GJWydfL8S3VAwpnKiyHK6O+CAQLeo+r2tSgHAc9doGpzpr/rMFqt9/yOPgtLnN/Ajmtcez4qSXZLgZTRLGu2H6NMbzVKSp5BLPjE6h6GDy+cVFqb25xSCHhU6EKVY/sWodQP5okuqeZ21YlDaaaIbS/ux9eylrWl02RhaTz8N0Rt4K123+f2h1mkfliXh30aFj8dNCaAbb4uQ2v/t3YnW6VTf1XO5zceFiwng7eluMp+7fVg/Xr5ipiaaYr91i0KZR/WZX576nbXgqQBiM3cebcqBAHoGDxscBrZx9clUHJdUrfnFMkg4bL6Si5RW//7jUT6rpI0KTrSvx7fJKRxCCvOAI34mhfbKnw+2GFgYPaL48rKVNNcFgYUz9ZF3M7Nze1pym/ZFARDLYU2nhU8Aao4ogUklEPYzOpoTChCZrQkBkuSgwDJpCBRU7BSkGaVDd7n3nOER/F/wvj5uzhIFbcclsv0Ec5ZZIMJdGYcJjrtk8vHiJJ+P/JUcbSN1Jzz5ckOqIwpKdv3jsqvNtoiKC/R08NY+UyvxTqVaAl1+rON5yxN4L5eaVJfCo/gxc9hlYuf+u8FogzdBdImk8lVICO3KcluA=
+  - secure: UVZik863RFMwVO7Tcj7cF+fafPqoszXyu1PFTIN+2MNEdD05AtlFsNLlEiF1d3bBsuc3fMsJdc62KH3ZUoNa4TSiBbn3P78zWlDZgPwb8COQuRsJx8iIFAftZac6dRcELkRmX2FHcp9xjqwvRFdFFnR+HmXDttVYwhIcMIHNf8PlpmVKhLaUcQhyE5k6rxfEhW2SacaKZ5lCTmJdNE2acu2MwCmu6bR4YqB5H99qvUx5cflYvW3xOlbNxwYEKxIozSxk1gnAUhfduF2xg7Z8hQ6pznEGzVDI8ZsI/sfKqTqr8+ZSpvwTP2yySLhNx3osWQ4CgK9iR+rCsgQ2oQPNUfDCJbniexn691yk9wxDWqVQYpQ3mfmf1W+cIHmO6I9ujTNcyMr+HO5boFix63y/w1xu+4fTrBKi3rb+nbr9Rn7rSHEK2oxEVvLWiHK57OdTDjoVdC6mAuO1Q93iF5VdEJWualfVFtgs9iTI+wjqHMEtG6ErMCbdHhGwL0dY4R7QwiZUopsUQfz5PmIO6S5OE1pipz4haLmaeuQPNrEAv0syC4jdFF7ttEAD6PBob3yX8dkXIfoFTAVp1K40RfV9JXbegjDQ/BCCKbMYH+3FDwajXwhtnIXbgEAEaM53N4NUZJg8hsnqp04h4dz0iRAkllw3Fd8vuMNGdKDO8y3IaTk=
