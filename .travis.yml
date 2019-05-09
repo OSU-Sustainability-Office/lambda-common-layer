@@ -15,7 +15,6 @@ deploy:
 - provider: script
   script: sam deploy --template-file ./packaged.yaml --stack-name serverless --capabilities
     CAPABILITY_IAM
-  github-token: "$GITHUB_TOKEN"
   skip-cleanup: true
   on:
     branch: master
