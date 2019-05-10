@@ -10,7 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.452.0",
+    "axios": "^0.18.0",
+    "cookie": "^0.3.1",
+    "dom-parser": "^0.1.6",
     "dotenv": "^8.0.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.17.1"
   }
 }
