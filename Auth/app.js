@@ -5,53 +5,47 @@
  * @Last Modified time: 2019-05-09 23:29:42
  * @Copyright: 2018 Oregon State University
 */
-const ddb = require('/opt/nodejs/dynamo-access.js')
+const User = require('/opt/nodejs/user.js')
+const Response = require('/opt/nodejs/response.js')
 const axios = require('axios')
-const cookie = require('cookie')
-const jwt = require('jsonwebtoken')
 const DomParser = require('dom-parser')
+const cookie = require('cookie')
 
 exports.login = async (event, context) => {
   let returnURICookie
-  if (event.queryStringParameters.returnURI) {
-    returnURICookie = cookie.serialize('returnURI', event.queryStringParameters.returnURI)
+  if (event.queryStringParameters && event.queryStringParameters.returnURI !== undefined) {
+    returnURICookie = cookie.serialize('redirect', event.queryStringParameters.returnURI)
   } else {
-    returnURICookie = cookie.serialize('returnURI', 'https://sustainability.oregonstate.edu')
+    returnURICookie = cookie.serialize('redirect', 'https://sustainability.oregonstate.edu')
   }
-  if (event.headers.host === '127.0.0.1:3000') {
-    const token = jwt.sign({
-      onid: 'minerb',
-      data: JSON.stringify({
-        energyDashboard: {
-          access: 5
-        }
-      })
-    }, '0xDEADBEEF')
-    return {
-      headers: {
-        'Set-Cookie': cookie.serialize('TOKEN', token, { httpOnly: true, secure: false })
-      },
-      statuscode: 301,
-      Location: cookie.parse(returnURICookie).returnURI
-    }
+  let response = new Response()
+  if (process.env.AWS_SAM_LOCAL === 'true') {
+    User({ onid: 'minerb' }, response)
+    return response.redirect(cookie.parse(returnURICookie)['redirect'])
   } else {
-    return {
-      headers: {
-        'Set-Cookie': returnURICookie
-      },
-      statuscode: 301,
-      Location: 'https://login.oregonstate.edu/cas/login?service=https://api.oregonstate.edu/auth/session'
-    }
+    response.updateCookie(returnURICookie)
+    return response.redirect('https://login.oregonstate.edu/cas/login?service=https://api.oregonstate.edu/auth/session')
+  }
+}
+
+exports.checkCookie = async (event, context) => {
+  let json = JSON.stringify(User(event))
+  return {
+    body: json
   }
 }
 
 exports.logout = async (event, context) => {
-  return JSON.stringify(event)
+  let response = new Response()
+  response.updateCookie(cookie.serialize('token', 'invalid', {
+    expires: new Date(0)
+  }))
+  return response.redirect('https://login.oregonstate.edu/idp/profile/cas/logout')
 }
 
 exports.session = async (event, context) => {
-  ddb.initialize()
   const validation = await axios('https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.oregonstate.edu/auth/session')
+  let response = new Response()
   if (validation.status === 200) {
     const parser = new DomParser()
     const body = parser.parseFromString(validation.data)
@@ -61,33 +55,7 @@ exports.session = async (event, context) => {
       firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
       primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
     }
-    try {
-      let user = await ddb.query('users').select({
-        'Select': 'ALL_ATTRIBUTES',
-        'Limit': 1,
-        'ConsistentRead': true,
-        'KeyConditionExpression': 'onid = :onid',
-        'ExpressionAttributeValues': {
-          ':onid': JSONRep.onid
-        }
-      })
-      JSONRep['data'] = user.data.Items[0].dataAck
-    } catch (error) {
-      try {
-        await ddb.query('users').put({ Item: JSONRep })
-      } catch (bigError) {
-        return {
-          statuscode: 500,
-          body: 'Oops'
-        }
-      }
-    }
-    return {
-      headers: {
-        'Set-Cookie': cookie.serialize('TOKEN', jwt.sign(JSONRep, '0xDEADBEEF'), { secure: true, httpOnly: true })
-      },
-      statuscode: 301,
-      Location: cookie.parse(event.headers.cookie).returnURI
-    }
+    User(JSONRep, response)
+    return response.redirect(cookie.parse(event.headers.Cookie).redirect)
   }
 }
