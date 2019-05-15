@@ -15,6 +15,66 @@ Globals:
     Runtime: nodejs8.10
 
 Resources:
+  AuthLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 128
+      CodeUri: Auth/
+      Handler: app.login
+      Layers:
+        - !Ref LambdaCommonLayer
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /auth/login
+            Method: get
+  AuthCookie:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 128
+      CodeUri: Auth/
+      Handler: app.checkCookie
+      Layers:
+        - !Ref LambdaCommonLayer
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /auth/check
+            Method: get
+  AuthLogout:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 128
+      Policies:
+        - AmazonDynamoDBFullAccess
+      CodeUri: Auth/
+      Handler: app.logout
+      Layers:
+        - !Ref LambdaCommonLayer
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /auth/logout
+            Method: get
+  AuthSession:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 128
+      Policies:
+        - AmazonDynamoDBFullAccess
+      CodeUri: Auth/
+      Handler: app.session
+      Layers:
+        - !Ref LambdaCommonLayer
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /auth/session
+            Method: get
   RDSTestFunction:
         Type: AWS::Serverless::Function
         Properties:

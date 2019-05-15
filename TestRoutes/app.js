@@ -1,4 +1,4 @@
-/**
+/*
  * @Author: Brogan Miner <Brogan>
  * @Date:   2019-05-05T18:10:16-07:00
  * @Email:  brogan.miner@oregonstate.edu
