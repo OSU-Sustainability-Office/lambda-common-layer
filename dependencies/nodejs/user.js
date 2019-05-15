@@ -68,6 +68,9 @@ class User {
     }
     if (response) {
       this.response = response
+      this.resolved.then(() => {
+        this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY), { httpOnly: true, secure: false }))
+      })
     }
   }
 
@@ -85,7 +88,7 @@ class User {
       throw new Error('Can not modify that key')
     }
     if (this.response) {
-      this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)))
+      this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: true, secure: false })
     }
     await ddb.query('users').put({ Item: this.data })
   }
@@ -106,4 +109,4 @@ class User {
   }
 }
 
-exports = User
+module.exports = User

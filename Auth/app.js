@@ -20,7 +20,9 @@ exports.login = async (event, context) => {
   }
   let response = new Response()
   if (process.env.AWS_SAM_LOCAL === 'true') {
-    User({ onid: 'minerb' }, response)
+    // eslint-disable-next-line no-new
+    let user = new User({ onid: 'minerb' }, response)
+    await user.resolved
     return response.redirect(cookie.parse(returnURICookie)['redirect'])
   } else {
     response.updateCookie(returnURICookie)
@@ -29,7 +31,7 @@ exports.login = async (event, context) => {
 }
 
 exports.checkCookie = async (event, context) => {
-  let json = JSON.stringify(User(event))
+  let json = JSON.stringify(new User(event))
   return {
     body: json
   }
@@ -55,7 +57,8 @@ exports.session = async (event, context) => {
       firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
       primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
     }
-    User(JSONRep, response)
+    // eslint-disable-next-line no-new
+    new User(JSONRep, response)
     return response.redirect(cookie.parse(event.headers.Cookie).redirect)
   }
 }

@@ -6,17 +6,17 @@
 
 class Response {
   constructor () {
-    this.Headers = {}
+    this.headers = {}
     this.statusCode = 200
     this.body = ''
   }
   updateCookie (cookie) {
-    this.Headers['Set-Cookie'] = cookie
+    this.headers['Set-Cookie'] = cookie
   }
   redirect (url) {
     return {
-      Headers: {
-        ...this.Headers,
+      headers: {
+        ...this.headers,
         Location: url
       },
       statusCode: 301
@@ -25,11 +25,11 @@ class Response {
   get
   data () {
     return {
-      Headers: this.Headers,
+      headers: this.headers,
       statusCode: this.statusCode,
       body: this.body
     }
   }
 }
 
-exports = Response
+module.exports = Response
