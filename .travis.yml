@@ -16,8 +16,8 @@ script:
 deploy:
 - provider: script
   script: >-
-    sam deploy --template-file ./packaged.yaml --stack-name serverless --capabilities CAPABILITY_IAM
-    sam publish --template packaged.yaml --region us-west-2
+    sam deploy --template-file ./packaged.yaml --stack-name serverless --capabilities CAPABILITY_IAM;
+    sam publish --template packaged.yaml --region us-west-2;
   skip-cleanup: true
   on:
     branch: master
