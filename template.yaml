@@ -8,7 +8,14 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: DB access wrappers for OSU Sustainability Office
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: OSUSORootApp
+    Description: Root application for OSU SO Nested Stack
+    Author: Brogan Miner
+    HomePageUrl: https://github.com/OSU-Sustainability-Office/lambda-common-layer
+    SemanticVersion: 1.0.0
+
 Globals:
   Function:
     Timeout: 3
