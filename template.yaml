@@ -34,21 +34,7 @@ Resources:
         Login:
           Type: Api
           Properties:
-            Path: /auth/login
-            Method: get
-  AuthCookie:
-    Type: AWS::Serverless::Function
-    Properties:
-      MemorySize: 128
-      CodeUri: Auth/
-      Handler: app.checkCookie
-      Layers:
-        - !Ref LambdaCommonLayer
-      Events:
-        Login:
-          Type: Api
-          Properties:
-            Path: /auth/check
+            Path: /login
             Method: get
   AuthLogout:
     Type: AWS::Serverless::Function
@@ -64,7 +50,7 @@ Resources:
         Login:
           Type: Api
           Properties:
-            Path: /auth/logout
+            Path: /logout
             Method: get
   AuthSession:
     Type: AWS::Serverless::Function
@@ -80,38 +66,8 @@ Resources:
         Login:
           Type: Api
           Properties:
-            Path: /auth/session
+            Path: /session
             Method: get
-  RDSTestFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            MemorySize: 128
-            CodeUri: TestRoutes/
-            Handler: app.rds
-            Layers:
-              - !Ref LambdaCommonLayer
-            Events:
-                Test:
-                    Type: Api
-                    Properties:
-                        Path: /test-rds
-                        Method: get
-  DDBTestFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            MemorySize: 128
-            Policies:
-              - AmazonDynamoDBFullAccess
-            CodeUri: TestRoutes/
-            Handler: app.ddb
-            Layers:
-              - !Ref LambdaCommonLayer
-            Events:
-                Test:
-                    Type: Api
-                    Properties:
-                        Path: /test-ddb
-                        Method: get
   LambdaCommonLayer:
         Type: AWS::Serverless::LayerVersion
         Properties:
