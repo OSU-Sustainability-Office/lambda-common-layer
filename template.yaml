@@ -14,7 +14,7 @@ Metadata:
     Description: Root application for OSU SO Nested Stack
     Author: Brogan Miner
     HomePageUrl: https://github.com/OSU-Sustainability-Office/lambda-common-layer
-    SemanticVersion: 1.0.0
+    SemanticVersion: 1.0.0 # Refer to here for semantic versioning: https://semver.org/
 
 Globals:
   Function:
