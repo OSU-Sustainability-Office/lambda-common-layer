@@ -1,0 +1,12 @@
+@startuml Example
+class User {
+  String primaryAffiliation
+  String onid
+  String firstName
+  dict appData
+  int privilege
+  dict data
+  void set()
+  any get()
+}
+@enduml

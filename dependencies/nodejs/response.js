@@ -3,10 +3,15 @@
  * Author: Brogan
  * Copyright (c) 2019 Oregon State University
  */
+require('dotenv').config({ path: '/opt/nodejs/.env' })
 
 class Response {
   constructor () {
     this.headers = {}
+    if (process.env.DEV_HOST && process.env.DEV_HOST !== '') {
+      this.headers['Access-Control-Allow-Origin'] = process.env.DEV_HOST
+      this.headers['Access-Control-Allow-Credentials'] = true
+    }
     this.statusCode = 200
     this.body = ''
   }

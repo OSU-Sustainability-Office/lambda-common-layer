@@ -36,6 +36,20 @@ Resources:
           Properties:
             Path: /login
             Method: get
+  AuthUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 128
+      CodeUri: Auth/
+      Handler: app.checkCookie
+      Layers:
+        - !Ref LambdaCommonLayer
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: get
   AuthLogout:
     Type: AWS::Serverless::Function
     Properties:

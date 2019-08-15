@@ -18,6 +18,7 @@ class User {
     this.appData = {}
     this.firstName = ''
     this.primaryAffiliation = ''
+    this.privilege = 0
 
     if (event['onid']) {
       // User was declared explicitly
@@ -34,6 +35,7 @@ class User {
         }
       }).then(value => {
         this.onid = event['onid']
+        this.privilege = value.data.Items[0].privilege
         this.appData = value.data.Items[0].appData
         this.firstName = value.data.Items[0].firstName
         this.primaryAffiliation = value.data.Items[0].primaryAffiliation
@@ -82,10 +84,10 @@ class User {
 
   async set (appName, data) {
     await this.resolved
-    if (this.data[appName]) {
+    if (appName === 'firstName' || appName === 'primaryAffiliation') {
       this[appName] = data
     } else {
-      throw new Error('Can not modify that key')
+      this.data[appName] = data
     }
     if (this.response) {
       this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: true, secure: false })

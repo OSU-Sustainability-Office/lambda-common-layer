@@ -31,10 +31,10 @@ exports.login = async (event, context) => {
 }
 
 exports.checkCookie = async (event, context) => {
-  let json = JSON.stringify(new User(event))
-  return {
-    body: json
-  }
+  let response = new Response()
+  let user = new User(event, response)
+  response.body = JSON.stringify(user.data)
+  return response
 }
 
 exports.logout = async (event, context) => {
