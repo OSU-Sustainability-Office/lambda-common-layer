@@ -10,7 +10,7 @@ class Response {
     this.headers = {}
     if (process.env.DEV_HOST && process.env.DEV_HOST !== '') {
       this.headers['Access-Control-Allow-Origin'] = process.env.DEV_HOST
-      this.headers['Access-Control-Allow-Credentials'] = true
+      this.headers['Access-Control-Allow-Credentials'] = 'true'
     }
     this.statusCode = 200
     this.body = ''
