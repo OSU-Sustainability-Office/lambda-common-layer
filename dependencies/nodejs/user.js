@@ -36,7 +36,7 @@ class User {
       }).then(value => {
         this.onid = event['onid']
         this.privilege = value.data.Items[0].privilege
-        this.appData = value.data.Items[0].appData
+        this.appData = value.data.Items[0].data
         this.firstName = value.data.Items[0].firstName
         this.primaryAffiliation = value.data.Items[0].primaryAffiliation
       }).catch(() => {
@@ -87,7 +87,7 @@ class User {
     if (appName === 'firstName' || appName === 'primaryAffiliation') {
       this[appName] = data
     } else {
-      this.data[appName] = data
+      this.appData[appName] = data
     }
     if (this.response) {
       this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: true, secure: false })

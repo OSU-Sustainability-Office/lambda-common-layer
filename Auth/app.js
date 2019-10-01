@@ -26,7 +26,7 @@ exports.login = async (event, context) => {
     return response.redirect(cookie.parse(returnURICookie)['redirect'])
   } else {
     response.updateCookie(returnURICookie)
-    return response.redirect('https://login.oregonstate.edu/cas/login?service=https://api.oregonstate.edu/auth/session')
+    return response.redirect('https://login.oregonstate.edu/cas-dev/login?service=https://api.oregonstate.edu/v2/auth/session')
   }
 }
 
@@ -42,11 +42,11 @@ exports.logout = async (event, context) => {
   response.updateCookie(cookie.serialize('token', 'invalid', {
     expires: new Date(0)
   }))
-  return response.redirect('https://login.oregonstate.edu/idp/profile/cas/logout')
+  return response.redirect('https://login.oregonstate.edu/idp/profile/cas-dev/logout')
 }
 
 exports.session = async (event, context) => {
-  const validation = await axios('https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.oregonstate.edu/auth/session')
+  const validation = await axios('https://login.oregonstate.edu/idp/profile/cas-dev/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.oregonstate.edu/auth/session')
   let response = new Response()
   if (validation.status === 200) {
     const parser = new DomParser()
