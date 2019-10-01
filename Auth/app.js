@@ -46,12 +46,11 @@ exports.logout = async (event, context) => {
 }
 
 exports.session = async (event, context) => {
-  const validation = await axios('https://login.oregonstate.edu/idp/profile/cas-dev/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.sustainability.oregonstate.edu/v2/auth/session')
+  const validation = await axios('https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.sustainability.oregonstate.edu/v2/auth/session')
   let response = new Response()
   if (validation.status === 200) {
     const parser = new DomParser()
     const body = parser.parseFromString(validation.data)
-
     let JSONRep = {
       onid: body.getElementsByTagName('cas:cas')[0].childNodes[0].textContent,
       firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
