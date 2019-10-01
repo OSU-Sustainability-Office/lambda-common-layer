@@ -48,16 +48,18 @@ exports.logout = async (event, context) => {
 exports.session = async (event, context) => {
   const validation = await axios('https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.sustainability.oregonstate.edu/v2/auth/session')
   let response = new Response()
-  if (validation.status === 200) {
-    const parser = new DomParser()
-    const body = parser.parseFromString(validation.data)
-    let JSONRep = {
-      onid: body.getElementsByTagName('cas:cas')[0].childNodes[0].textContent,
-      firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
-      primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
-    }
-    // eslint-disable-next-line no-new
-    new User(JSONRep, response)
-    return response.redirect(cookie.parse(event.headers.Cookie).redirect)
-  }
+  response.body = validation.data
+  // if (validation.status === 200) {
+  //   const parser = new DomParser()
+  //   const body = parser.parseFromString(validation.data)
+  //   let JSONRep = {
+  //     onid: body.getElementsByTagName('cas:cas')[0].childNodes[0].textContent,
+  //     firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
+  //     primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
+  //   }
+  //   // eslint-disable-next-line no-new
+  //   new User(JSONRep, response)
+  //   return response.redirect(cookie.parse(event.headers.Cookie).redirect)
+  // }
+  return response
 }
