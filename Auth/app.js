@@ -26,7 +26,7 @@ exports.login = async (event, context) => {
     return response.redirect(cookie.parse(returnURICookie)['redirect'])
   } else {
     response.updateCookie(returnURICookie)
-    return response.redirect('https://login.oregonstate.edu/cas-dev/login?service=https://api.oregonstate.edu/v2/auth/session')
+    return response.redirect('https://login.oregonstate.edu/cas-dev/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session')
   }
 }
 
