@@ -10,6 +10,8 @@ const Response = require('/opt/nodejs/response.js')
 const axios = require('axios')
 const DomParser = require('dom-parser')
 const cookie = require('cookie')
+const jwt = require('jsonwebtoken')
+require('dotenv').config({ path: '/opt/nodejs/.env' })
 
 exports.login = async (event, context) => {
   let returnURICookie
@@ -66,6 +68,7 @@ exports.session = async (event, context) => {
       // eslint-disable-next-line no-new
       let user = new User(JSONRep, response)
       await user.resolved
+      response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY), { httpOnly: false, secure: false }))
     }
     response.body = JSON.stringify(response)
     return response
