@@ -32,9 +32,14 @@ exports.login = async (event, context) => {
 
 exports.checkCookie = async (event, context) => {
   let response = new Response()
-  let user = new User(event, response)
-  await user.resolved
-  response.body = JSON.stringify(user.data)
+  try {
+    let user = new User(event, response)
+    await user.resolved
+    response.body = JSON.stringify(user.data)
+  } catch (error) {
+    response.statusCode = 403
+    response.body = error.message
+  }
   return response
 }
 

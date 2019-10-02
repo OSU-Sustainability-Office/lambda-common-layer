@@ -56,7 +56,12 @@ class User {
       // Parse cookie and create data
       // Wrapped into a promise to mimic the other side
       this.resolved = new Promise((resolve, reject) => {
-        let user = jwt.verify(cookie.parse(event.headers.Cookie).token, process.env.JWT_KEY)
+        let user = null
+        try {
+          user = jwt.verify(cookie.parse(event.headers.Cookie).token, process.env.JWT_KEY)
+        } catch (error) {
+          reject(new Error('Could not parse request cookie'))
+        }
         if (user) {
           this.onid = user.onid
           this.primaryAffiliation = user.primaryAffiliation
