@@ -60,11 +60,11 @@ exports.session = async (event, context) => {
     if (validation.data.includes('Success')) {
       const parser = new DomParser()
       const body = parser.parseFromString(validation.data)
-      // let JSONRep = {
-      //   onid: body.getElementsByTagName('cas:cas')[0].childNodes[0].textContent,
-      //   firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
-      //   primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
-      // }
+      let JSONRep = {
+        onid: body.getElementsByTagName('cas:cas')[0].childNodes[0].textContent,
+        firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
+        primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
+      }
       // eslint-disable-next-line no-new
       // let user = new User(JSONRep, response)
       // await user.resolved
