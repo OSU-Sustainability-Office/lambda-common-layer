@@ -33,6 +33,7 @@ exports.login = async (event, context) => {
 exports.checkCookie = async (event, context) => {
   let response = new Response()
   let user = new User(event, response)
+  await user.resolved
   response.body = JSON.stringify(user.data)
   return response
 }
@@ -58,7 +59,8 @@ exports.session = async (event, context) => {
         primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
       }
       // eslint-disable-next-line no-new
-      new User(JSONRep, response)
+      let user = new User(JSONRep, response)
+      await user.resolved
     }
     return response.redirect(cookie.parse(event.headers.Cookie).redirect)
   }
