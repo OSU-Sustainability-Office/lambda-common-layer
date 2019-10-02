@@ -67,7 +67,9 @@ exports.session = async (event, context) => {
       let user = new User(JSONRep, response)
       await user.resolved
     }
-    return response.redirect(cookie.parse(event.headers.Cookie).redirect)
+    response.body = JSON.stringify(event.headers.Cookie)
+    return response
+    // return response.redirect(cookie.parse(event.headers.Cookie).redirect)
   }
   return response
 }
