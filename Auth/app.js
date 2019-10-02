@@ -68,12 +68,9 @@ exports.session = async (event, context) => {
       // eslint-disable-next-line no-new
       let user = new User(JSONRep, response)
       await user.resolved
-      response.body = 'test'
-      // response.updateCookie(cookie.serialize('token', jwt.sign(user.data, process.env.JWT_KEY), { httpOnly: false, secure: false }))
     }
-    response.body = JSON.stringify(response)
-    return response
-    // return response.redirect(cookie.parse(event.headers.Cookie).redirect)
+
+    return response.redirect(cookie.parse(event.headers.Cookie).redirect)
   }
   return response
 }
