@@ -71,7 +71,7 @@ class User {
     if (response) {
       this.response = response
       this.resolved.then(() => {
-        this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY), { httpOnly: true, secure: false }))
+        this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY), { httpOnly: false, secure: false }))
       })
     }
   }
@@ -90,7 +90,7 @@ class User {
       this.appData[appName] = data
     }
     if (this.response) {
-      this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: true, secure: false })
+      this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: false, secure: false })
     }
     await ddb.query('users').put({ Item: this.data })
   }

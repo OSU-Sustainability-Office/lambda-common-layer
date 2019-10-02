@@ -20,7 +20,7 @@ class Response {
         ...this.headers,
         Location: url
       },
-      statusCode: 301
+      statusCode: 302
     }
   }
   get
