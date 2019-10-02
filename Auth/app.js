@@ -70,7 +70,7 @@ exports.session = async (event, context) => {
       await user.resolved
       response.updateCookie(cookie.serialize('token', jwt.sign(user.data, process.env.JWT_KEY), { httpOnly: false, secure: false }))
     }
-    response.body = JSON.stringify(response)
+    response.body = validation.data
     return response
     // return response.redirect(cookie.parse(event.headers.Cookie).redirect)
   }
