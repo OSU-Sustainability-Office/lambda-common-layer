@@ -20,8 +20,9 @@ Globals:
   Function:
     Timeout: 3
     Runtime: nodejs8.10
-  Cors: 
-    AllowOrigin: "'http://localhost:8080'"
+  Api:
+    Cors: 
+      AllowOrigin: "'http://localhost:8080'"
 
 Resources:
   AuthLogin:
