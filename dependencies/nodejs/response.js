@@ -7,7 +7,10 @@ require('dotenv').config({ path: '/opt/nodejs/.env' })
 
 class Response {
   constructor () {
-    this.headers = {}
+    this.headers = {
+      'Access-Control-Allow-Origin': 'http://localhost:8080',
+      'Access-Control-Allow-Credentials': 'true'
+    }
     this.statusCode = 200
     this.body = ''
   }
