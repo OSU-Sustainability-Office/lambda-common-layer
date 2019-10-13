@@ -25,7 +25,7 @@ class User {
       // Return the existing user in the DDB
       // Or create one
 
-      this.resolved = ddb.query('users').select({
+      this.resolved = ddb.query('lambda-users').select({
         'Select': 'ALL_ATTRIBUTES',
         'Limit': 1,
         'ConsistentRead': true,
@@ -40,7 +40,7 @@ class User {
         this.firstName = value.data.Items[0].firstName
         this.primaryAffiliation = value.data.Items[0].primaryAffiliation
       }).catch(() => {
-        this.resolved = ddb.query('users').put({
+        this.resolved = ddb.query('lambda-users').put({
           Item: {
             onid: event['onid'],
             firstName: event['firstName'],
@@ -97,7 +97,7 @@ class User {
     if (this.response) {
       this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: false, secure: false })
     }
-    await ddb.query('users').put({ Item: this.data })
+    await ddb.query('lambda-users').put({ Item: this.data })
   }
 
   async delete (appName, data) {
