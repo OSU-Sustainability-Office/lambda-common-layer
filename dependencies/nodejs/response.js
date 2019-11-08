@@ -15,7 +15,7 @@ class Response {
     this.body = ''
   }
   updateCookie (cookie) {
-    this.headers['Set-Cookie'] = cookie + '; Path="/v2"' // This prevents the path from defaulting to /v2/auth on Firefox.
+    this.headers['Set-Cookie'] = cookie + '; Path="/v2"; Domain="api.sustainability.oregonstate.edu"' // This prevents the path from defaulting to /v2/auth on Firefox.
   }
   redirect (url) {
     return {
