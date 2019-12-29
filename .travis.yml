@@ -2,8 +2,7 @@ language: python
 python:
 - '2.7'
 before_install:
-- openssl aes-256-cbc -K $encrypted_b2ff4d1c781f_key -iv $encrypted_b2ff4d1c781f_iv
-  -in dependencies/nodejs/.env.enc -out dependencies/nodejs/.env -d
+- openssl aes-256-cbc -K $encrypted_a96308b85465_key -iv $encrypted_a96308b85465_iv -in .env.enc -out ./dependencies/nodejs/.env -d
 install:
 - nvm install 8.10
 - pip install awscli
