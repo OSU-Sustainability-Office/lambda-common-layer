@@ -19,11 +19,11 @@ exports.connect = function () {
       resolve(state.db)
     } else {
       state.db = mysql.createConnection({
-        host: process.env.RDS_HOSTNAME,
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
-        port: process.env.RDS_PORT,
-        database: process.env.RDS_DATABASE
+        host: process.env.AURORA_HOSTNAME,
+        user: process.env.AURORA_USERNAME,
+        password: process.env.AURORA_PASSWORD,
+        port: process.env.AURORA_PORT,
+        database: process.env.AURORA_DATABASE
       })
       state.db.connect(function (err) {
         if (err) {
