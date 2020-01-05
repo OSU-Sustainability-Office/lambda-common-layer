@@ -12,7 +12,7 @@ var state = {
   db: null
 }
 
-exports.connect = function () {
+exports.connect = function (database) {
   return new Promise((resolve, reject) => {
     console.log(process.env.RDS_HOSTNAME)
     if (state.db) {
@@ -23,7 +23,7 @@ exports.connect = function () {
         user: process.env.RDS_USERNAME,
         password: process.env.RDS_PASSWORD,
         port: process.env.RDS_PORT,
-        database: process.env.RDS_DATABASE
+        database: database == null ? process.env.RDS_DATABASE : database
       })
       state.db.connect(function (err) {
         if (err) {
