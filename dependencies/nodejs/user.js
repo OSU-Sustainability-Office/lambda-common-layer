@@ -35,10 +35,10 @@ class User {
         }
       }).then(value => {
         this.onid = event['onid']
-        this.privilege = value.data.Items[0].privilege
-        this.appData = value.data.Items[0].data
-        this.firstName = value.data.Items[0].firstName
-        this.primaryAffiliation = value.data.Items[0].primaryAffiliation
+        this.privilege = value.Items[0].privilege
+        this.appData = value.Items[0].data
+        this.firstName = value.Items[0].firstName
+        this.primaryAffiliation = value.Items[0].primaryAffiliation
       }).catch(() => {
         this.resolved = ddb.query('lambda-users').put({
           Item: {
