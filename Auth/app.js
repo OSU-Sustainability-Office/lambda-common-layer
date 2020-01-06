@@ -21,15 +21,8 @@ exports.login = async (event, context) => {
     returnURICookie = cookie.serialize('redirect', 'https://sustainability.oregonstate.edu')
   }
   let response = new Response()
-  if (process.env.AWS_SAM_LOCAL === 'true') {
-    // eslint-disable-next-line no-new
-    let user = new User({ onid: 'minerb' }, response)
-    await user.resolved
-    return response.redirect(cookie.parse(returnURICookie)['redirect'])
-  } else {
-    response.updateCookie(returnURICookie)
-    return response.redirect('https://login.oregonstate.edu/idp/profile/cas/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session')
-  }
+  response.updateCookie(returnURICookie)
+  return response.redirect('https://login.oregonstate.edu/idp/profile/cas/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session')
 }
 
 exports.checkCookie = async (event, context) => {
@@ -63,7 +56,7 @@ exports.session = async (event, context) => {
       let JSONRep = {
         onid: body.getElementsByTagName('cas:uid')[0].childNodes[0].textContent,
         firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
-        primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
+        primaryAffiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
       }
       // eslint-disable-next-line no-new
       let user = new User(JSONRep, response)
