@@ -45,7 +45,8 @@ class User {
             onid: event['onid'],
             firstName: event['firstName'],
             primaryAffiliation: event['primaryAffiliation'],
-            appData: {}
+            appData: {},
+            privilege: 0
           }
         }).catch(() => {
           throw new Error('Could not create user')
@@ -67,6 +68,7 @@ class User {
           this.primaryAffiliation = user.primaryAffiliation
           this.firstName = user.firstName
           this.appData = user.appData
+          this.privilege = user.privilege
           resolve()
         } else {
           reject(new Error('Could not parse request cookie'))
