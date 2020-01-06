@@ -111,6 +111,7 @@ class User {
   data () {
     return {
       onid: this.onid,
+      test: 'this should show up',
       primaryAffiliation: this.primaryAffiliation,
       firstName: this.firstName,
       data: this.appData
