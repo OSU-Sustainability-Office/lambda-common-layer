@@ -9,6 +9,7 @@
 
 require('dotenv').config({ path: '/opt/nodejs/.env' })
 const AWS = require('aws-sdk')
+AWS.config.update({region: 'us-west-2'})
 
 class DDBQuery {
   constructor (ddb, table) {
