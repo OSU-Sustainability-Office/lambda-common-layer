@@ -85,13 +85,13 @@ class User {
 
   async get (appName, key = '') {
     await this.resolved
-    if (appName === 'firstName' || appName === 'primaryAffiliation') return this[appName]
+    if (appName === 'firstName' || appName === 'primaryAffiliation' || appName === 'privilege') return this[appName]
     return this.appData[appName][key]
   }
 
   async set (appName, data) {
     await this.resolved
-    if (appName === 'firstName' || appName === 'primaryAffiliation') {
+    if (appName === 'firstName' || appName === 'primaryAffiliation' || appName === 'privilege') {
       this[appName] = data
     } else {
       this.appData[appName] = data
@@ -111,7 +111,7 @@ class User {
   data () {
     return {
       onid: this.onid,
-      test: 'this should show up',
+      privilege: this.privilege,
       primaryAffiliation: this.primaryAffiliation,
       firstName: this.firstName,
       appData: this.appData
