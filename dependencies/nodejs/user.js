@@ -36,7 +36,7 @@ class User {
       }).then(value => {
         this.onid = event['onid']
         this.privilege = value.Items[0].privilege
-        this.appData = value.Items[0].data
+        this.appData = value.Items[0].appData
         this.firstName = value.Items[0].firstName
         this.primaryAffiliation = value.Items[0].primaryAffiliation
       }).catch(error => {
