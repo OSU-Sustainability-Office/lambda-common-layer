@@ -14,7 +14,6 @@ var state = {
 
 exports.connect = function (database) {
   return new Promise((resolve, reject) => {
-    console.log(process.env.RDS_HOSTNAME)
     if (state.db) {
       resolve(state.db)
     } else {
