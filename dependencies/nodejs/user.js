@@ -39,8 +39,7 @@ class User {
         this.appData = value.Items[0].appData
         this.firstName = value.Items[0].firstName
         this.primaryAffiliation = value.Items[0].primaryAffiliation
-      }).catch(error => {
-        console.log(error)
+      }).catch(() => {
         this.resolved = ddb.query('lambda-users').put({
           Item: {
             onid: event['onid'],
