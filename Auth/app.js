@@ -32,8 +32,14 @@ exports.checkCookie = async (event, context) => {
     await user.resolved
     response.body = JSON.stringify(user.data)
   } catch (error) {
-    response.statusCode = 403
-    response.body = error.message
+    response.statusCode = 200
+    response.body = JSON.stringify({
+      onid: '',
+      privilege: 0,
+      primaryAffiliation: '',
+      firstName: '',
+      appData: {}
+    })
   }
   return response
 }
