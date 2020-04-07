@@ -15,7 +15,7 @@
     "cookie": "^0.3.1",
     "dom-parser": "^0.1.6",
     "dotenv": "^8.0.0",
-    "jimp": "^0.9.3",
+    "jimp": "^0.9.8",
     "jsonwebtoken": "^8.5.1",
     "lambda-multipart-parser": "0.0.2",
     "mysql": "^2.17.1"
