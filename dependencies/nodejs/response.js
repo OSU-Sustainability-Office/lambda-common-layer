@@ -6,10 +6,14 @@
 require('dotenv').config({ path: '/opt/nodejs/.env' })
 
 class Response {
-  constructor () {
-    this.headers = {
-      'Access-Control-Allow-Origin': 'http://localhost:8080',
-      'Access-Control-Allow-Credentials': 'true'
+  constructor (event) {
+    if (event) {
+      this.headers = {
+        'Access-Control-Allow-Origin': event.headers['Host'],
+        'Access-Control-Allow-Credentials': 'true'
+      }
+    } else {
+      this.headers = {}
     }
     this.statusCode = 200
     this.body = ''
