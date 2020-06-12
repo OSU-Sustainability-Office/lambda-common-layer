@@ -19,7 +19,7 @@ Metadata:
 Globals:
   Function:
     Timeout: 3
-    Runtime: nodejs8.10
+    Runtime: nodejs10.x
   Api:
     Cors: 
       AllowOrigin: "'http://localhost:8080'"
@@ -94,5 +94,6 @@ Resources:
             CompatibleRuntimes:
               - nodejs6.10
               - nodejs8.10
+              - nodejs10.x
             LicenseInfo: 'MIT'
             RetentionPolicy: Retain

@@ -20,33 +20,32 @@ exports.login = async (event, context) => {
   } else {
     returnURICookie = cookie.serialize('redirect', 'https://sustainability.oregonstate.edu')
   }
-  let response = new Response()
-  if (process.env.AWS_SAM_LOCAL === 'true') {
-    // eslint-disable-next-line no-new
-    let user = new User({ onid: 'minerb' }, response)
-    await user.resolved
-    return response.redirect(cookie.parse(returnURICookie)['redirect'])
-  } else {
-    response.updateCookie(returnURICookie)
-    return response.redirect('https://login.oregonstate.edu/idp/profile/cas/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session')
-  }
+  let response = new Response(event)
+  response.updateCookie(returnURICookie)
+  return response.redirect('https://login.oregonstate.edu/idp/profile/cas/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session')
 }
 
 exports.checkCookie = async (event, context) => {
-  let response = new Response()
+  let response = new Response(event)
   try {
     let user = new User(event, response)
     await user.resolved
     response.body = JSON.stringify(user.data)
   } catch (error) {
-    response.statusCode = 403
-    response.body = error.message
+    response.statusCode = 200
+    response.body = JSON.stringify({
+      onid: '',
+      privilege: 0,
+      primaryAffiliation: '',
+      firstName: '',
+      appData: {}
+    })
   }
   return response
 }
 
 exports.logout = async (event, context) => {
-  let response = new Response()
+  let response = new Response(event)
   response.updateCookie(cookie.serialize('token', 'invalid', {
     expires: new Date(0)
   }))
@@ -55,7 +54,7 @@ exports.logout = async (event, context) => {
 
 exports.session = async (event, context) => {
   const validation = await axios('https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.sustainability.oregonstate.edu/v2/auth/session')
-  let response = new Response()
+  let response = new Response(event)
   if (validation.status === 200) {
     if (validation.data.includes('Success')) {
       const parser = new DomParser()
@@ -63,7 +62,7 @@ exports.session = async (event, context) => {
       let JSONRep = {
         onid: body.getElementsByTagName('cas:uid')[0].childNodes[0].textContent,
         firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
-        primaryAfiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
+        primaryAffiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
       }
       // eslint-disable-next-line no-new
       let user = new User(JSONRep, response)

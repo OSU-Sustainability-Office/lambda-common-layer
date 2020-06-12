@@ -25,7 +25,7 @@ class User {
       // Return the existing user in the DDB
       // Or create one
 
-      this.resolved = ddb.query('users').select({
+      this.resolved = ddb.query('lambda-users').select({
         'Select': 'ALL_ATTRIBUTES',
         'Limit': 1,
         'ConsistentRead': true,
@@ -35,17 +35,18 @@ class User {
         }
       }).then(value => {
         this.onid = event['onid']
-        this.privilege = value.data.Items[0].privilege
-        this.appData = value.data.Items[0].data
-        this.firstName = value.data.Items[0].firstName
-        this.primaryAffiliation = value.data.Items[0].primaryAffiliation
+        this.privilege = value.Items[0].privilege
+        this.appData = value.Items[0].appData
+        this.firstName = value.Items[0].firstName
+        this.primaryAffiliation = value.Items[0].primaryAffiliation
       }).catch(() => {
-        this.resolved = ddb.query('users').put({
+        this.resolved = ddb.query('lambda-users').put({
           Item: {
             onid: event['onid'],
             firstName: event['firstName'],
             primaryAffiliation: event['primaryAffiliation'],
-            appData: {}
+            appData: {},
+            privilege: 0
           }
         }).catch(() => {
           throw new Error('Could not create user')
@@ -67,6 +68,7 @@ class User {
           this.primaryAffiliation = user.primaryAffiliation
           this.firstName = user.firstName
           this.appData = user.appData
+          this.privilege = user.privilege
           resolve()
         } else {
           reject(new Error('Could not parse request cookie'))
@@ -83,13 +85,13 @@ class User {
 
   async get (appName, key = '') {
     await this.resolved
-    if (appName === 'firstName' || appName === 'primaryAffiliation') return this[appName]
+    if (appName === 'firstName' || appName === 'primaryAffiliation' || appName === 'privilege') return this[appName]
     return this.appData[appName][key]
   }
 
   async set (appName, data) {
     await this.resolved
-    if (appName === 'firstName' || appName === 'primaryAffiliation') {
+    if (appName === 'firstName' || appName === 'primaryAffiliation' || appName === 'privilege') {
       this[appName] = data
     } else {
       this.appData[appName] = data
@@ -97,7 +99,7 @@ class User {
     if (this.response) {
       this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: false, secure: false })
     }
-    await ddb.query('users').put({ Item: this.data })
+    await ddb.query('lambda-users').put({ Item: this.data })
   }
 
   async delete (appName, data) {
@@ -109,9 +111,10 @@ class User {
   data () {
     return {
       onid: this.onid,
+      privilege: this.privilege,
       primaryAffiliation: this.primaryAffiliation,
       firstName: this.firstName,
-      data: this.appData
+      appData: this.appData
     }
   }
 }

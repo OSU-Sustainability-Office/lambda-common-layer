@@ -1,14 +1,14 @@
 language: python
 python:
-- '2.7'
+- '3.7'
+node_js:
+- '10'
 before_install:
-- openssl aes-256-cbc -K $encrypted_b2ff4d1c781f_key -iv $encrypted_b2ff4d1c781f_iv
-  -in dependencies/nodejs/.env.enc -out dependencies/nodejs/.env -d
+- openssl aes-256-cbc -K $encrypted_a4267a9c202b_key -iv $encrypted_a4267a9c202b_iv -in .env.enc -out ./dependencies/nodejs/.env -d
 install:
-- nvm install 8.10
 - pip install awscli
 - pip install aws-sam-cli
-- npm --prefix dependencies/nodejs install
+- npm install --prefix=dependencies/nodejs install --loglevel=verbose
 script:
 - sam validate
 - sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file
