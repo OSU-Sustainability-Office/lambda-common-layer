@@ -19,7 +19,7 @@ exports.connect = function (database) {
     } else {
       state.db = mysql.createConnection({
         host: "sus-map-test.cprqtsu50rmv.us-west-2.rds.amazonaws.com",
-        user: "Admin",
+        user: "admin",
         password: "susmap123",
         port: 3306,
         database: database == null ? process.env.RDS_DATABASE : database
