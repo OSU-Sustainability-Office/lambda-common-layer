@@ -22,7 +22,7 @@ exports.connect = function (database) {
         user: "admin",
         password: "susmap123",
         port: 3306,
-        database: database == null ? process.env.RDS_DATABASE : database
+        database: "sustainability_map"
       })
       state.db.connect(function (err) {
         if (err) {
