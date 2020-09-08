@@ -12,12 +12,17 @@ class Response {
         'Access-Control-Allow-Origin': event.headers.origin,
         'Access-Control-Allow-Credentials': 'true'
       }
-    } else {
+    } else if (event && event.headers.referrer) {
       this.headers = {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': event.headers.referrer,
         'Access-Control-Allow-Credentials': 'true'
       }
-    }
+    } else {
+     this.headers = {
+       'Access-Control-Allow-Origin': '*',
+       'Access-Control-Allow-Credentials': 'true'
+     }
+   }
     this.statusCode = 200
     this.body = ''
   }
