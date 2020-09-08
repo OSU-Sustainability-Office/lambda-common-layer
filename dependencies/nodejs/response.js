@@ -12,9 +12,9 @@ class Response {
         'Access-Control-Allow-Origin': event.headers.origin,
         'Access-Control-Allow-Credentials': 'true'
       }
-    } else if (event && event.headers.referrer) {
+    } else if (event && event.headers.referer) {
       this.headers = {
-        'Access-Control-Allow-Origin': event.headers.referrer,
+        'Access-Control-Allow-Origin': event.headers.referer,
         'Access-Control-Allow-Credentials': 'true'
       }
     } else {
