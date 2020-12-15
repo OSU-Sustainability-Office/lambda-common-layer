@@ -22,11 +22,11 @@ Globals:
     Runtime: nodejs10.x
   Api:
     Cors: 
-    AllowMethods: "'POST, GET'"
-    AllowHeaders: "'X-Forwarded-For'"
-    AllowOrigin: "'oregonstate.edu'"
-    MaxAge: "'600'"
-    AllowCredentials: True
+        AllowMethods: "'POST, GET'"
+        AllowHeaders: "'X-Forwarded-For'"
+        AllowOrigin: "'oregonstate.edu'"
+        MaxAge: "'600'"
+        AllowCredentials: True
 
 Resources:
   AuthLogin:
