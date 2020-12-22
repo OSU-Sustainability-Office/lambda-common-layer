@@ -9,6 +9,7 @@ class Response {
   constructor (event) {
     this.statusCode = 200
     this.body = ''
+    this.headers = {}
   }
   updateCookie (cookie) {
     this.headers['Set-Cookie'] = cookie + '; Path=/v2; Domain=.oregonstate.edu; Max-Age=7200; SameSite=None; Secure' // This prevents the path from defaulting to /v2/auth on Firefox, and makes the cookie expire in 2 hours.
