@@ -1,17 +1,8 @@
-/*
- * @Author: Brogan.Miner@oregonstate.edu
- * @Date: 2019-05-09 21:21:36
- * @Last Modified by: Brogan.Miner@oregonstate.edu
- * @Last Modified time: 2019-05-09 23:29:42
- * @Copyright: 2018 Oregon State University
-*/
 const User = require('/opt/nodejs/user.js')
 const Response = require('/opt/nodejs/response.js')
 const axios = require('axios')
 const DomParser = require('dom-parser')
 const cookie = require('cookie')
-// const jwt = require('jsonwebtoken')
-// require('dotenv').config({ path: '/opt/nodejs/.env' })
 
 exports.login = async (event, context) => {
   let returnURICookie
