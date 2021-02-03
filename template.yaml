@@ -25,7 +25,7 @@ Globals:
         AllowMethods: "'POST, GET'"
         AllowHeaders: "'X-Forwarded-For'"
         AllowOrigin: "'oregonstate.edu'"
-        MaxAge: "'600'"
+        MaxAge: "'601'"
         AllowCredentials: True
 
 Resources:
