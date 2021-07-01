@@ -2,7 +2,7 @@ language: python
 python:
 - '3.7'
 node_js:
-- '10'
+- '12'
 before_install:
 - openssl aes-256-cbc -K $encrypted_a4267a9c202b_key -iv $encrypted_a4267a9c202b_iv -in .env.enc -out ./dependencies/nodejs/.env -d
 install:
