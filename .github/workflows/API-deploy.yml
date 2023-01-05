@@ -2,7 +2,7 @@ name: SAM Deployment
 on:
   push:
     branches:
-      - gh-actions-ci
+      - master
 jobs:
   deploy-sam:
     name: Deploy Serveless API
@@ -26,12 +26,15 @@ jobs:
         node-version: 12
     - name: npm install
       run: npm install --prefix=dependencies/nodejs install --loglevel=verbose
-    - name: OpenSSL Encryption
-      run: openssl aes-256-cbc -K $encrypted_a4267a9c202b_key -iv $encrypted_a4267a9c202b_iv -in .env.enc -out ./dependencies/nodejs/.env -d
+
+# Encryption part needs work
+# - name: OpenSSL Encryption
+# run: openssl aes-256-cbc -K $encrypted_a4267a9c202b_key -iv $encrypted_a4267a9c202b_iv -in .env.enc -out ./dependencies/nodejs/.env -d
+
     - name: Deploy
-      working-directory: backend
       run: |
         sam validate
         sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file packaged.yaml
         
-#sam deploy --template-file /home/runner/work/energy-dashboard/energy-dashboard/backend/packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM --region us-west-2 --no-confirm-changeset --no-fail-on-empty-changeset
+#sam deploy --template-file /home/runner/work/auth/auth/packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM --region us-west-2 --no-confirm-changeset --no-fail-on-empty-changeset
+# Note: deploy path above is not tested and could be wrong. A successful run with sam package should show deploy path.
