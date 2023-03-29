@@ -1,8 +1,11 @@
 name: Lambda Common Layer Deployment
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - ci-enc-upgrade
 jobs:
   deploy-sam:
-    name: Try Manually
+    name: Deploy Serveless API
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
