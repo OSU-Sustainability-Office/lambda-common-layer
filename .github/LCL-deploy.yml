@@ -1,11 +1,8 @@
 name: Lambda Common Layer Deployment
-on:
-  push:
-    branches:
-      - master
+on: workflow_dispatch
 jobs:
   deploy-sam:
-    name: Deploy Serveless API
+    name: Try Manually
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -31,5 +28,3 @@ jobs:
     - name: Deploy
       run: |
         sam validate
-        sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file packaged.yaml
-        sam deploy --template-file ./packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM
