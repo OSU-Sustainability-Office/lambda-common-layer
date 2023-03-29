@@ -2,7 +2,7 @@ name: Lambda Common Layer Deployment
 on: [workflow_dispatch]
 jobs:
   deploy-sam:
-    name: Deploy Serveless API
+    name: Try Manually
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
