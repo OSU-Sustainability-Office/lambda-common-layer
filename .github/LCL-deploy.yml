@@ -1,5 +1,5 @@
 name: Lambda Common Layer Deployment
-on: [workflow_dispatch]
+on: workflow_dispatch
 jobs:
   deploy-sam:
     name: Try Manually
