@@ -32,4 +32,4 @@ jobs:
       run: |
         sam validate
         sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file packaged.yaml
-        sam deploy --template-file ./packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM
+        sam deploy --template-file ./packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset
