@@ -19,7 +19,7 @@ Metadata:
 Globals:
   Function:
     Timeout: 3
-    Runtime: nodejs18.x
+    Runtime: nodejs20.x
   Api:
     Cors: 
         AllowMethods: "'POST, GET'"
@@ -102,5 +102,6 @@ Resources:
               - nodejs12.x
               - nodejs16.x
               - nodejs18.x
+              - nodejs20.x
             LicenseInfo: 'MIT'
             RetentionPolicy: Retain
