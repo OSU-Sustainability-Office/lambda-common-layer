@@ -7,7 +7,7 @@ This package is used as a Lambda Layer to simplify accessing databases and user 
 
 * Have Docker running
 * Have AWS CLI installed to the latest version
-* Install dependencies in root and in `depencencies\nodejs`
+* Install dependencies in root and in `dependencies\nodejs`
 * Either decrypt the `.env.enc` or add the `.env` file in `dependencies\nodejs` (You need to be a paid OSU SO employee to view the credentials for this step)
 * In root folder:
   * `sam build`
