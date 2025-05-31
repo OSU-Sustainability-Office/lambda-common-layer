@@ -29,66 +29,6 @@ Globals:
         AllowCredentials: True
 
 Resources:
-  AuthLogin:
-    Type: AWS::Serverless::Function
-    Properties:
-      MemorySize: 128
-      CodeUri: Auth/
-      Handler: app.login
-      Layers:
-        - !Ref LambdaCommonLayer
-      Events:
-        Login:
-          Type: Api
-          Properties:
-            Path: /login
-            Method: get
-  AuthUser:
-    Type: AWS::Serverless::Function
-    Properties:
-      MemorySize: 128
-      CodeUri: Auth/
-      Handler: app.checkCookie
-      Layers:
-        - !Ref LambdaCommonLayer
-      Events:
-        Login:
-          Type: Api
-          Properties:
-            Path: /user
-            Method: get
-  AuthLogout:
-    Type: AWS::Serverless::Function
-    Properties:
-      MemorySize: 128
-      Policies:
-        - AmazonDynamoDBFullAccess
-      CodeUri: Auth/
-      Handler: app.logout
-      Layers:
-        - !Ref LambdaCommonLayer
-      Events:
-        Login:
-          Type: Api
-          Properties:
-            Path: /logout
-            Method: get
-  AuthSession:
-    Type: AWS::Serverless::Function
-    Properties:
-      MemorySize: 128
-      Policies:
-        - AmazonDynamoDBFullAccess
-      CodeUri: Auth/
-      Handler: app.session
-      Layers:
-        - !Ref LambdaCommonLayer
-      Events:
-        Login:
-          Type: Api
-          Properties:
-            Path: /session
-            Method: get
   LambdaCommonLayer:
         Type: AWS::Serverless::LayerVersion
         Properties:
