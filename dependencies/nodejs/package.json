@@ -14,7 +14,7 @@
     "axios": "^0.18.1",
     "cookie": "^0.3.1",
     "dom-parser": "^0.1.6",
-    "dotenv": "^8.0.0",
+    "dotenv": "^16.5.0",
     "jimp": "^0.9.8",
     "jsonwebtoken": "^8.5.1",
     "lambda-multipart-parser": "0.0.2",
