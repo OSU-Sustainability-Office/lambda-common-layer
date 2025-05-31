@@ -1,6 +1,7 @@
 {
   "name": "sustainability-office-lambda-common-layer",
   "version": "1.0.0",
+  "type": "module",
   "description": "Lambda common layer for the Sustainability Office AWS services.",
   "main": "",
   "scripts": {
@@ -14,5 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.5.3"
   }
 }
