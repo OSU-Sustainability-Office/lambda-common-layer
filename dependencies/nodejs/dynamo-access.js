@@ -9,15 +9,15 @@
 
 require('dotenv').config({ path: '/opt/nodejs/.env' })
 const AWS = require('aws-sdk')
-AWS.config.update({region: 'us-west-2'})
+AWS.config.update({ region: 'us-west-2' })
 
 class DDBQuery {
-  constructor (ddb, table) {
+  constructor(ddb, table) {
     this.ddb = ddb
     this.table = table
   }
 
-  select (params) {
+  select(params) {
     params.TableName = this.table
 
     return new Promise((resolve, reject) => {
@@ -30,7 +30,7 @@ class DDBQuery {
     })
   }
 
-  scan (params) {
+  scan(params) {
     params.TableName = this.table
 
     return new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ class DDBQuery {
     })
   }
 
-  update (params) {
+  update(params) {
     params.TableName = this.table
 
     return new Promise((resolve, reject) => {
@@ -56,7 +56,7 @@ class DDBQuery {
     })
   }
 
-  put (params) {
+  put(params) {
     params.TableName = this.table
 
     return new Promise((resolve, reject) => {
@@ -76,8 +76,7 @@ var state = {
 
 exports.initialize = function () {
   if (!state.ddb) {
-    state.ddb = new AWS.DynamoDB.DocumentClient({
-    })
+    state.ddb = new AWS.DynamoDB.DocumentClient({})
   }
 }
 

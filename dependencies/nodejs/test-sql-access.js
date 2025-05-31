@@ -18,11 +18,11 @@ exports.connect = function (database) {
       resolve(state.db)
     } else {
       state.db = mysql.createConnection({
-        host: "sus-map-test.cprqtsu50rmv.us-west-2.rds.amazonaws.com",
-        user: "admin",
-        password: "susmap123",
+        host: 'sus-map-test.cprqtsu50rmv.us-west-2.rds.amazonaws.com',
+        user: 'admin',
+        password: 'susmap123',
         port: 3306,
-        database: "sustainability_map"
+        database: 'sustainability_map'
       })
       state.db.connect(function (err) {
         if (err) {
@@ -38,7 +38,9 @@ exports.connect = function (database) {
 exports.query = function (sql, args) {
   return new Promise((resolve, reject) => {
     state.db.query(sql, args, (err, rows) => {
-      if (err) { return reject(err) }
+      if (err) {
+        return reject(err)
+      }
       resolve(rows)
     })
   })
@@ -51,7 +53,9 @@ exports.get = function () {
 exports.close = function () {
   return new Promise((resolve, reject) => {
     state.db.end(err => {
-      if (err) { return reject(err) }
+      if (err) {
+        return reject(err)
+      }
       resolve()
     })
   })

@@ -7,7 +7,7 @@
  */
 const AWS = require('aws-sdk')
 require('dotenv').config({ path: '/opt/nodejs/.env' })
-AWS.config.update({region: 'us-west-2'})
+AWS.config.update({ region: 'us-west-2' })
 
 exports = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,

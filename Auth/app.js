@@ -13,7 +13,9 @@ exports.login = async (event, context) => {
   }
   let response = new Response(event)
   response.updateCookie(returnURICookie)
-  return response.redirect('https://login.oregonstate.edu/idp/profile/cas/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session')
+  return response.redirect(
+    'https://login.oregonstate.edu/idp/profile/cas/login?service=https://api.sustainability.oregonstate.edu/v2/auth/session'
+  )
 }
 
 exports.checkCookie = async (event, context) => {
@@ -37,14 +39,20 @@ exports.checkCookie = async (event, context) => {
 
 exports.logout = async (event, context) => {
   let response = new Response(event)
-  response.updateCookie(cookie.serialize('token', 'invalid', {
-    expires: new Date(0)
-  }))
+  response.updateCookie(
+    cookie.serialize('token', 'invalid', {
+      expires: new Date(0)
+    })
+  )
   return response.redirect('https://login.oregonstate.edu/idp/profile/cas/logout')
 }
 
 exports.session = async (event, context) => {
-  const validation = await axios('https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' + event.queryStringParameters.ticket + '&service=https://api.sustainability.oregonstate.edu/v2/auth/session')
+  const validation = await axios(
+    'https://login.oregonstate.edu/idp/profile/cas/serviceValidate?ticket=' +
+      event.queryStringParameters.ticket +
+      '&service=https://api.sustainability.oregonstate.edu/v2/auth/session'
+  )
   let response = new Response(event)
   if (validation.status === 200) {
     if (validation.data.includes('Success')) {
@@ -55,7 +63,7 @@ exports.session = async (event, context) => {
         firstName: body.getElementsByTagName('cas:firstname')[0].childNodes[0].textContent,
         primaryAffiliation: body.getElementsByTagName('cas:eduPersonPrimaryAffiliation')[0].childNodes[0].textContent
       }
-      // eslint-disable-next-line no-new
+       
       let user = new User(JSONRep, response)
       await user.resolved
     }

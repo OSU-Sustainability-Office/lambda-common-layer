@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config({ path: '/opt/nodejs/.env' })
 
 class User {
-  constructor (event, response = null) {
+  constructor(event, response = null) {
     ddb.initialize()
 
     this.onid = ''
@@ -25,33 +25,40 @@ class User {
       // Return the existing user in the DDB
       // Or create one
 
-      this.resolved = ddb.query('lambda-users').select({
-        'Select': 'ALL_ATTRIBUTES',
-        'Limit': 1,
-        'ConsistentRead': true,
-        'KeyConditionExpression': 'onid = :onid',
-        'ExpressionAttributeValues': {
-          ':onid': event['onid']
-        }
-      }).then(value => {
-        this.onid = event['onid']
-        this.privilege = value.Items[0].privilege
-        this.appData = value.Items[0].appData
-        this.firstName = value.Items[0].firstName
-        this.primaryAffiliation = value.Items[0].primaryAffiliation
-      }).catch(() => {
-        this.resolved = ddb.query('lambda-users').put({
-          Item: {
-            onid: event['onid'],
-            firstName: event['firstName'],
-            primaryAffiliation: event['primaryAffiliation'],
-            appData: {},
-            privilege: 0
+      this.resolved = ddb
+        .query('lambda-users')
+        .select({
+          Select: 'ALL_ATTRIBUTES',
+          Limit: 1,
+          ConsistentRead: true,
+          KeyConditionExpression: 'onid = :onid',
+          ExpressionAttributeValues: {
+            ':onid': event['onid']
           }
-        }).catch(() => {
-          throw new Error('Could not create user')
         })
-      })
+        .then(value => {
+          this.onid = event['onid']
+          this.privilege = value.Items[0].privilege
+          this.appData = value.Items[0].appData
+          this.firstName = value.Items[0].firstName
+          this.primaryAffiliation = value.Items[0].primaryAffiliation
+        })
+        .catch(() => {
+          this.resolved = ddb
+            .query('lambda-users')
+            .put({
+              Item: {
+                onid: event['onid'],
+                firstName: event['firstName'],
+                primaryAffiliation: event['primaryAffiliation'],
+                appData: {},
+                privilege: 0
+              }
+            })
+            .catch(() => {
+              throw new Error('Could not create user')
+            })
+        })
     } else {
       // Implicit Decleration of user
       // Parse cookie and create data
@@ -78,18 +85,20 @@ class User {
     if (response) {
       this.response = response
       this.resolved.then(() => {
-        this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY), { httpOnly: false, secure: false }))
+        this.response.updateCookie(
+          cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY), { httpOnly: false, secure: false })
+        )
       })
     }
   }
 
-  async get (appName, key = '') {
+  async get(appName, key = '') {
     await this.resolved
     if (appName === 'firstName' || appName === 'primaryAffiliation' || appName === 'privilege') return this[appName]
     return this.appData[appName][key]
   }
 
-  async set (appName, data) {
+  async set(appName, data) {
     await this.resolved
     if (appName === 'firstName' || appName === 'primaryAffiliation' || appName === 'privilege') {
       this[appName] = data
@@ -97,18 +106,20 @@ class User {
       this.appData[appName] = data
     }
     if (this.response) {
-      this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), { httpOnly: false, secure: false })
+      this.response.updateCookie(cookie.serialize('token', jwt.sign(this.data, process.env.JWT_KEY)), {
+        httpOnly: false,
+        secure: false
+      })
     }
     await ddb.query('lambda-users').put({ Item: this.data })
   }
 
-  async delete (appName, data) {
+  async delete(appName, data) {
     await this.resolved
     // This stub does nothing 'til I can find an adequate use case
   }
 
-  get
-  data () {
+  get data() {
     return {
       onid: this.onid,
       privilege: this.privilege,

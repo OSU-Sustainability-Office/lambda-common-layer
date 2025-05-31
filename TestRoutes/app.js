@@ -27,8 +27,8 @@ exports.rds = async (event, context) => {
     await rds.connect()
     let msg = await rds.query('SELECT * FROM stories WHERE id = 95')
     response = {
-      'statusCode': 200,
-      'body': JSON.stringify({
+      statusCode: 200,
+      body: JSON.stringify({
         message: msg
       })
     }
@@ -44,11 +44,11 @@ exports.ddb = async (event, context) => {
   let response
   try {
     let features = await ddb.query('sus_map').scan({
-      'Select': 'ALL_ATTRIBUTES'
+      Select: 'ALL_ATTRIBUTES'
     })
     response = {
-      'statusCode': 200,
-      'body': JSON.stringify({
+      statusCode: 200,
+      body: JSON.stringify({
         message: features
       })
     }
