@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '/opt/nodejs/.env' })
+import dotenv from 'dotenv'
+dotenv.config({ path: '/opt/nodejs/.env' })
 
 class Response {
   constructor(event) {
@@ -44,4 +45,4 @@ class Response {
   }
 }
 
-module.exports = Response
+export default Response
