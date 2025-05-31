@@ -1,3 +1,6 @@
+// Filename: response.js
+// Description: Defines a Response class for handling HTTP response in a Node.js environment,
+//              particularly for AWS Lambda functions.
 import dotenv from 'dotenv'
 dotenv.config({ path: '/opt/nodejs/.env' })
 
