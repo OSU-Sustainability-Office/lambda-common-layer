@@ -23,9 +23,9 @@ export function connect(database) {
       state.db.connect(function (err) {
         if (err) {
           console.error('Database connection failed: ' + err.stack)
-          return
+          return reject(err)
         }
-        resolve()
+        resolve(state.db)
       })
     }
   })
