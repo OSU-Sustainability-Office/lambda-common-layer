@@ -6,14 +6,19 @@ dotenv.config({ path: '/opt/nodejs/.env' })
 
 class Response {
   constructor(event) {
-    if (event && event.headers.origin) {
+    // normalize headers
+    const normalizedHeaders = event.headers || {}
+    const originHeader = normalizedHeaders.origin || normalizedHeaders.Origin
+    const refererHeader = normalizedHeaders.referer || normalizedHeaders.Referer
+
+    if (originHeader) {
       this.headers = {
-        'Access-Control-Allow-Origin': event.headers.origin,
+        'Access-Control-Allow-Origin': originHeader,
         'Access-Control-Allow-Credentials': 'true'
       }
-    } else if (event && event.headers.referer) {
+    } else if (refererHeader) {
       this.headers = {
-        'Access-Control-Allow-Origin': event.headers.referer,
+        'Access-Control-Allow-Origin': refererHeader,
         'Access-Control-Allow-Credentials': 'true'
       }
     } else {
