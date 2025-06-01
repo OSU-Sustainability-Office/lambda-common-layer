@@ -14,17 +14,14 @@ class Response {
     if (originHeader) {
       this.headers = {
         'Access-Control-Allow-Origin': originHeader,
-        'Access-Control-Allow-Credentials': 'true'
       }
     } else if (refererHeader) {
       this.headers = {
         'Access-Control-Allow-Origin': refererHeader,
-        'Access-Control-Allow-Credentials': 'true'
       }
     } else {
       this.headers = {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true'
       }
     }
 
