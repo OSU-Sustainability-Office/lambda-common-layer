@@ -1,6 +1,6 @@
 name: Lambda Common Layer Deployment
 on:
-  pull_request:
+  push:
     branches:
       - master
 jobs:
