@@ -10,6 +10,7 @@ class Response {
     const normalizedHeaders = event.headers || {}
     const originHeader = normalizedHeaders.origin || normalizedHeaders.Origin
     const refererHeader = normalizedHeaders.referer || normalizedHeaders.Referer
+    console.log('test version')
 
     if (originHeader) {
       this.headers = {
