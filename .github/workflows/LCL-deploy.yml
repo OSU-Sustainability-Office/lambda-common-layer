@@ -24,15 +24,19 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
+
     - name: npm install
       run: npm install --prefix=dependencies/nodejs install --loglevel=verbose
+
     - name: env encrpytion
       run: openssl aes-256-cbc -K ${{ secrets.ENV_KEY }} -iv ${{ secrets.ENV_IV }} -in .env.enc -out ./dependencies/nodejs/.env -d
+
     - name: Deploy
       run: |
         sam validate
         sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file packaged.yaml
         sam deploy --template-file ./packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset
+
     - name: Fetch latest layer ARN
       id: layer
       run: |
@@ -41,7 +45,18 @@ jobs:
                 --query 'Stacks[0].Outputs[?OutputKey==`LambdaCommonLayerArn`].OutputValue' \
                 --output text)
         echo "layer_arn=$ARN" >> "$GITHUB_OUTPUT"
-    - name: Update dependent stack parameters for energy dashboard
+
+    - name: Check if layer ARN changed
+      id: check_layer
+      run: |
+        CURRENT_ARN=$(aws cloudformation describe-stacks \
+                --stack-name energy \
+                --query 'Stacks[0].Parameters[?ParameterKey==`LambdaCommonLayer`].ParameterValue' \
+                --output text)
+        echo "current=$CURRENT_ARN" >> "$GITHUB_OUTPUT"
+
+    - name: Update dependent stack parameters for energy dashboard if layer ARN changed
+      if: steps.layer.outputs.layer_arn != steps.check_layer.outputs.current
       run: |
         aws cloudformation update-stack \
           --stack-name energy \
