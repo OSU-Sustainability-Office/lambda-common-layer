@@ -33,3 +33,20 @@ jobs:
         sam validate
         sam package --template-file template.yaml --s3-bucket osu-so-serverless-builds --output-template-file packaged.yaml
         sam deploy --template-file ./packaged.yaml --stack-name auth --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset
+    - name: Fetch latest layer ARN
+      id: layer
+      run: |
+        ARN=$(aws cloudformation describe-stacks \
+                --stack-name auth \
+                --query 'Stacks[0].Outputs[?OutputKey==`LambdaCommonLayerArn`].OutputValue' \
+                --output text)
+        echo "layer_arn=$ARN" >> "$GITHUB_OUTPUT"
+    - name: Update dependent stack parameters for energy dashboard
+      run: |
+        aws cloudformation update-stack \
+          --stack-name energy \
+          --use-previous-template \
+          --parameters \
+            ParameterKey=LambdaCommonLayer,ParameterValue=${{ steps.layer.outputs.layer_arn }} \
+          --capabilities CAPABILITY_IAM
+    
