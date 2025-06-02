@@ -45,3 +45,10 @@ Resources:
               - nodejs20.x
             LicenseInfo: 'MIT'
             RetentionPolicy: Retain
+
+Outputs:
+  LambdaCommonLayerArn:
+    Description: Latest versioned ARN of the common layer
+    Value: !Ref LambdaCommonLayer
+    Export:
+      Name: LambdaCommonLayerArn # exported for use in other stacks 
