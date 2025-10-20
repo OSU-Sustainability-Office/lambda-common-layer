@@ -8,7 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix .",
     "prettier": "prettier --write \"**/*.{js,json}\"",
-    "format": "npm-run-all --continue-on-error prettier lint"
+    "format": "npm-run-all --continue-on-error prettier lint",
+    "format:check": "npm-run-all prettier:check lint:check",
+    "prettier:check": "prettier --check \"**/*.{js,json}\"",
+    "lint:check": "eslint . --max-warnings=0"
   },
   "private": true,
   "files": [
