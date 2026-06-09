@@ -6,6 +6,9 @@ on:
 permissions:
   id-token: write
   contents: read
+env:
+  AWS_REGION: us-west-2
+  AWS_DEFAULT_REGION: us-west-2
 jobs:
   deploy-sam:
     name: Deploy Serveless API
