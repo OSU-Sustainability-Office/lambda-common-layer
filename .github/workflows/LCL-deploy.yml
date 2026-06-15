@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.10'
       - uses: aws-actions/setup-sam@v2
-      - uses: aws-actions/configure-aws-credentials@v5
+      - uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::005937143026:role/github-actions-ci-v2
           role-session-name: lcl-deploy-${{ github.run_id }}
