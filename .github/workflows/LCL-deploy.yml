@@ -14,7 +14,7 @@ jobs:
     name: Deploy Serveless API
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v6
