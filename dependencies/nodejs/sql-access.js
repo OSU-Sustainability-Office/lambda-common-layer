@@ -1,6 +1,6 @@
 // Filename: sql-access.js
 // Description: Provides a module for connecting to a MySQL database and executing queries.
-import mysql from 'mysql'
+import mysql from 'mysql2'
 import dotenv from 'dotenv'
 dotenv.config({ path: '/opt/nodejs/.env' })
 
@@ -28,7 +28,12 @@ export function connect(database) {
         user: process.env.RDS_USERNAME,
         password: process.env.RDS_PASSWORD,
         port: process.env.RDS_PORT,
-        database: database == null ? process.env.RDS_DATABASE : database
+        database: database == null ? process.env.RDS_DATABASE : database,
+        // Keep the old `mysql` package's result types so callers see no difference:
+        // JSON columns as strings (callers JSON.parse them, e.g. buildings.geojson in the
+        // energy dashboard) and DECIMAL columns as numbers rather than strings.
+        jsonStrings: true,
+        decimalNumbers: true
       })
       // Fatal errors outside a query (e.g. the server closing an idle connection)
       conn.on('error', err => {
